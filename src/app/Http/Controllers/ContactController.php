@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\ContactRequest;
+use App\Models\Contact;
 
 class ContactController extends Controller
 {
@@ -10,18 +11,20 @@ class ContactController extends Controller
     {
         return view('index');
     }
-    public function confirm(Request $request)
+    public function confirm(ContactRequest $request)
     {
+        //dd($request->only(['name','email','tel','content']));
         $contact = $request->only(['name', 'email', 'tel', 'content']);
         return view('confirm', compact('contact'));
     }
-    public function store(Request $request)
+    public function store(ContactRequest $request)
     {
-         // 入力内容を受け取る
+     // 入力内容を受け取る
         $contact = $request->only(['name', 'email', 'tel', 'content']);
+        Contact::create($contact);
 
     // 確認ページを表示
-    return view('thanks', compact('contact'));
+        return view('thanks', compact('contact'));
     }
 
 }
